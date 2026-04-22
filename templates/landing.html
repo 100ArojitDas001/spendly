@@ -24,7 +24,7 @@
         </p>
         <div class="lp-actions">
             <a href="{{ url_for('register') }}" class="lp-btn">Create free account</a>
-            <a href="#" class="lp-btn">See how it works</a>
+            <a href="#" class="lp-btn" id="how-it-works-btn">See how it works</a>
         </div>
         <div class="lp-browser">
             <div class="lp-browser-bar">
@@ -75,6 +75,22 @@
     </div>
 </section>
 
+<div class="lp-modal-overlay" id="how-it-works-modal" aria-hidden="true">
+    <div class="lp-modal">
+        <button class="lp-modal-close" id="how-it-works-close" aria-label="Close">&times;</button>
+        <div class="lp-modal-video">
+            <iframe
+                id="how-it-works-iframe"
+                src=""
+                title="How Spendly works"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+            ></iframe>
+        </div>
+    </div>
+</div>
+
 <section class="features">
     <div class="features-inner">
         <div class="feature-card">
@@ -103,4 +119,43 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    var VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+    var overlay  = document.getElementById('how-it-works-modal');
+    var iframe   = document.getElementById('how-it-works-iframe');
+    var openBtn  = document.getElementById('how-it-works-btn');
+    var closeBtn = document.getElementById('how-it-works-close');
+
+    function openModal() {
+        iframe.src = VIDEO_URL + '?autoplay=1';
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        iframe.src = '';
+    }
+
+    openBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+}());
+</script>
 {% endblock %}
