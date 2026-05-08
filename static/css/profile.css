@@ -1,0 +1,259 @@
+/* ------------------------------------------------------------------ */
+/* Badge colour tokens                                                 */
+/* ------------------------------------------------------------------ */
+
+:root {
+    --badge-transport-bg:       #e8eef6;
+    --badge-transport-text:     #3a5f8a;
+    --badge-health-bg:          #fce8ec;
+    --badge-health-text:        #a0304a;
+    --badge-entertainment-bg:   #f0e8f8;
+    --badge-entertainment-text: #6d3a9a;
+    --badge-shopping-bg:        #e8f5f3;
+    --badge-shopping-text:      #2a7a6a;
+}
+
+/* ------------------------------------------------------------------ */
+/* Profile header                                                      */
+/* ------------------------------------------------------------------ */
+
+.profile-header {
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--border);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+}
+
+.profile-header-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.profile-name {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--ink);
+    line-height: 1.2;
+}
+
+.profile-email {
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Stats strip                                                         */
+/* ------------------------------------------------------------------ */
+
+.stats-section {
+    padding: 2.5rem 2rem;
+}
+
+.stats-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.stat-tile {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--ink);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared section wrapper                                              */
+/* ------------------------------------------------------------------ */
+
+.section-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Transaction table                                                   */
+/* ------------------------------------------------------------------ */
+
+.transactions-section {
+    padding: 0 2rem 3rem;
+}
+
+.table-wrap {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.expense-table th {
+    padding: 0.85rem 1.25rem;
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+}
+
+.expense-table td {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--ink-soft);
+}
+
+.expense-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.expense-table tbody tr:hover td {
+    background: var(--paper);
+}
+
+.col-date {
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.col-amount {
+    text-align: right;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Category badges                                                     */
+/* ------------------------------------------------------------------ */
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.badge-food          { background: var(--accent-light);   color: var(--accent); }
+.badge-bills         { background: var(--accent-2-light); color: var(--accent-2); }
+.badge-transport     { background: var(--badge-transport-bg);       color: var(--badge-transport-text); }
+.badge-health        { background: var(--badge-health-bg);           color: var(--badge-health-text); }
+.badge-entertainment { background: var(--badge-entertainment-bg);    color: var(--badge-entertainment-text); }
+.badge-shopping      { background: var(--badge-shopping-bg);         color: var(--badge-shopping-text); }
+.badge-other         { background: var(--border-soft);    color: var(--ink-muted); }
+
+/* ------------------------------------------------------------------ */
+/* Category breakdown                                                  */
+/* ------------------------------------------------------------------ */
+
+.breakdown-section {
+    padding: 0 2rem 4rem;
+}
+
+.breakdown-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.breakdown-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 80px;
+    align-items: center;
+    gap: 1rem;
+}
+
+.breakdown-cat {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+}
+
+.breakdown-amt {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-align: right;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                          */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 700px) {
+    .stats-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .breakdown-row {
+        grid-template-columns: 100px 1fr 70px;
+    }
+
+    .expense-table th,
+    .expense-table td {
+        padding: 0.7rem 0.9rem;
+    }
+}
