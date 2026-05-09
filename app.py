@@ -1,5 +1,6 @@
-from flask import Flask, render_template, session, redirect, url_for, request, abort
-from database.db import get_db, init_db, seed_db, get_user_by_email, verify_password
+import sqlite3
+from flask import Flask, render_template, session, redirect, url_for, request, abort, flash
+from database.db import get_db, init_db, seed_db, get_user_by_email, verify_password, create_user
 from database.queries import get_recent_transactions, get_user_by_id, get_summary_stats, get_category_breakdown
 
 app = Flask(__name__)
@@ -15,8 +16,27 @@ def landing():
     return render_template("landing.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+        confirm = request.form.get("confirm_password", "")
+
+        if not all([name, email, password, confirm]):
+            flash("All fields are required.")
+            return render_template("register.html")
+        if password != confirm:
+            flash("Passwords do not match.")
+            return render_template("register.html")
+        try:
+            create_user(name, email, password)
+        except sqlite3.IntegrityError:
+            flash("Email already registered.")
+            return render_template("register.html")
+        flash("Account created! Please sign in.")
+        return redirect(url_for("login"))
     return render_template("register.html")
 
 
@@ -30,7 +50,8 @@ def login():
             session["user_id"] = user["id"]
             session["user_name"] = user["name"]
             return redirect(url_for("profile"))
-        return render_template("login.html", error="Invalid email or password.")
+        flash("Invalid email or password.")
+        return render_template("login.html")
     return render_template("login.html")
 
 

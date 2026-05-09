@@ -50,6 +50,19 @@ def verify_password(user, password):
     return check_password_hash(user["password_hash"], password)
 
 
+def create_user(name, email, password):
+    conn = get_db()
+    hashed = generate_password_hash(password)
+    cur = conn.execute(
+        "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
+        (name, email, hashed),
+    )
+    user_id = cur.lastrowid
+    conn.commit()
+    conn.close()
+    return user_id
+
+
 def seed_db():
     conn = get_db()
     if conn.execute("SELECT 1 FROM users LIMIT 1").fetchone():
