@@ -1,5 +1,6 @@
-from flask import Flask, render_template, session, redirect, url_for, request
+from flask import Flask, render_template, session, redirect, url_for, request, abort
 from database.db import get_db, init_db, seed_db, get_user_by_email, verify_password
+from database.queries import get_recent_transactions, get_user_by_id, get_summary_stats, get_category_breakdown
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"
@@ -58,36 +59,20 @@ def profile():
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
-    user = {
-        "name": "Demo User",
-        "email": "demo@spendly.com",
-        "initials": "DU",
-        "member_since": "May 2026",
-    }
+    user_id = session["user_id"]
+
+    user = get_user_by_id(user_id)
+    if user is None:
+        abort(404)
+
+    raw = get_summary_stats(user_id)
     stats = {
-        "total_spent": "$338.25",
-        "transaction_count": 8,
-        "top_category": "Bills",
+        "total_spent":       f"₹{raw['total_spent']:.2f}",
+        "transaction_count": raw["transaction_count"],
+        "top_category":      raw["top_category"],
     }
-    transactions = [
-        {"date": "May 08", "description": "Miscellaneous",    "category": "Other",         "amount": "$10.00"},
-        {"date": "May 07", "description": "Grocery top-up",   "category": "Food",          "amount": "$15.75"},
-        {"date": "May 06", "description": "Clothing",         "category": "Shopping",      "amount": "$80.00"},
-        {"date": "May 05", "description": "Movie tickets",    "category": "Entertainment", "amount": "$25.00"},
-        {"date": "May 04", "description": "Pharmacy",         "category": "Health",        "amount": "$30.00"},
-        {"date": "May 03", "description": "Electricity bill", "category": "Bills",         "amount": "$120.00"},
-        {"date": "May 02", "description": "Monthly bus pass", "category": "Transport",     "amount": "$45.00"},
-        {"date": "May 01", "description": "Lunch at cafe",    "category": "Food",          "amount": "$12.50"},
-    ]
-    categories = [
-        {"name": "Bills",         "amount": "$120.00", "pct": 36},
-        {"name": "Shopping",      "amount": "$80.00",  "pct": 24},
-        {"name": "Transport",     "amount": "$45.00",  "pct": 13},
-        {"name": "Health",        "amount": "$30.00",  "pct": 9},
-        {"name": "Entertainment", "amount": "$25.00",  "pct": 7},
-        {"name": "Food",          "amount": "$28.25",  "pct": 8},
-        {"name": "Other",         "amount": "$10.00",  "pct": 3},
-    ]
+    transactions = get_recent_transactions(user_id)
+    categories = get_category_breakdown(user_id)
     return render_template("profile.html",
                            user=user, stats=stats,
                            transactions=transactions, categories=categories)
