@@ -50,7 +50,8 @@ def login():
             session["user_id"] = user["id"]
             session["user_name"] = user["name"]
             return redirect(url_for("profile"))
-        return render_template("login.html", error="Invalid email or password.")
+        flash("Invalid email or password.")
+        return render_template("login.html")
     return render_template("login.html")
 
 
