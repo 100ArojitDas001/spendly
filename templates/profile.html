@@ -64,9 +64,12 @@
 <!-- ------------------------------------------------------------------ -->
 <section class="transactions-section">
     <div class="section-inner">
-        <h2 class="section-title">
-            {% if from_date and to_date %}Transactions{% else %}Recent Transactions{% endif %}
-        </h2>
+        <div class="section-title-row">
+            <h2 class="section-title">
+                {% if from_date and to_date %}Transactions{% else %}Recent Transactions{% endif %}
+            </h2>
+            <a href="{{ url_for('add_expense') }}" class="btn-primary">+ Add Expense</a>
+        </div>
         <div class="table-wrap">
             <table class="expense-table">
                 <thead>
