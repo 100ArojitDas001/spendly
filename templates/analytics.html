@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics — Spendly{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analytics.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="coming-soon-section">
+    <div class="coming-soon-inner">
+
+        <div class="coming-soon-icon" aria-hidden="true">◈</div>
+
+        <span class="hero-badge">Coming Soon</span>
+
+        <h1 class="coming-soon-title">Analytics</h1>
+
+        <p class="coming-soon-subtitle">
+            Deep insights into your spending habits are on the way.
+            Track trends, spot patterns, and take control of where your money goes.
+        </p>
+
+        <div class="coming-soon-features">
+            <div class="coming-soon-card">
+                <div class="coming-soon-card-icon">▲</div>
+                <h3 class="coming-soon-card-title">Spending Trends</h3>
+                <p class="coming-soon-card-body">Monthly and weekly charts showing how your spending evolves over time.</p>
+            </div>
+            <div class="coming-soon-card">
+                <div class="coming-soon-card-icon">◉</div>
+                <h3 class="coming-soon-card-title">Category Breakdown</h3>
+                <p class="coming-soon-card-body">Visual breakdown of every rupee — by category, merchant, and date range.</p>
+            </div>
+            <div class="coming-soon-card">
+                <div class="coming-soon-card-icon">◎</div>
+                <h3 class="coming-soon-card-title">Smart Insights</h3>
+                <p class="coming-soon-card-body">Automatic highlights of unusual spend, top categories, and budget gaps.</p>
+            </div>
+        </div>
+
+        <a href="{{ url_for('profile') }}" class="btn-primary">Back to Profile</a>
+
+    </div>
+</section>
+
+{% endblock %}

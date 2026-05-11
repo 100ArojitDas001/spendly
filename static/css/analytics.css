@@ -1,0 +1,91 @@
+/* ------------------------------------------------------------------ */
+/* Analytics — Coming Soon                                             */
+/* ------------------------------------------------------------------ */
+
+.coming-soon-section {
+    min-height: calc(100vh - 60px - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+}
+
+.coming-soon-inner {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+}
+
+.coming-soon-icon {
+    font-size: 3rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: block;
+    opacity: 0.6;
+}
+
+.coming-soon-inner .hero-badge {
+    margin-bottom: 1.5rem;
+}
+
+.coming-soon-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+}
+
+.coming-soon-subtitle {
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 3rem;
+}
+
+.coming-soon-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    text-align: left;
+}
+
+.coming-soon-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+}
+
+.coming-soon-card-icon {
+    font-size: 1.25rem;
+    color: var(--accent);
+    margin-bottom: 0.875rem;
+}
+
+.coming-soon-card-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+}
+
+.coming-soon-card-body {
+    font-size: 0.875rem;
+    color: var(--ink-muted);
+    line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+    .coming-soon-features {
+        grid-template-columns: 1fr;
+    }
+
+    .coming-soon-section {
+        padding: 3rem 1rem;
+        align-items: flex-start;
+    }
+}
