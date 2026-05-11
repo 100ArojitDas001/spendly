@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 from flask import Flask, render_template, session, redirect, url_for, request, abort, flash
 from database.db import get_db, init_db, seed_db, get_user_by_email, verify_password, create_user
 from database.queries import get_recent_transactions, get_user_by_id, get_summary_stats, get_category_breakdown
@@ -86,17 +87,42 @@ def profile():
     if user is None:
         abort(404)
 
-    raw = get_summary_stats(user_id)
+    from_date = request.args.get("from_date", "").strip() or None
+    to_date = request.args.get("to_date", "").strip() or None
+
+    from_dt = to_dt = None
+    if from_date or to_date:
+        try:
+            if from_date:
+                from_dt = datetime.strptime(from_date, "%Y-%m-%d")
+            if to_date:
+                to_dt = datetime.strptime(to_date, "%Y-%m-%d")
+        except ValueError:
+            flash("Invalid date format. Please use the date picker.")
+            from_date = to_date = None
+            from_dt = to_dt = None
+
+    if from_date and to_date and from_date > to_date:
+        flash("'From' date must be on or before 'To' date.")
+        from_date = to_date = None
+        from_dt = to_dt = None
+
+    from_display = from_dt.strftime("%b %-d") if from_dt else None
+    to_display = to_dt.strftime("%b %-d") if to_dt else None
+
+    raw = get_summary_stats(user_id, from_date=from_date, to_date=to_date)
     stats = {
         "total_spent":       f"₹{raw['total_spent']:.2f}",
         "transaction_count": raw["transaction_count"],
         "top_category":      raw["top_category"],
     }
-    transactions = get_recent_transactions(user_id)
-    categories = get_category_breakdown(user_id)
+    transactions = get_recent_transactions(user_id, from_date=from_date, to_date=to_date)
+    categories = get_category_breakdown(user_id, from_date=from_date, to_date=to_date)
     return render_template("profile.html",
                            user=user, stats=stats,
-                           transactions=transactions, categories=categories)
+                           transactions=transactions, categories=categories,
+                           from_date=from_date, to_date=to_date,
+                           from_display=from_display, to_display=to_display)
 
 
 @app.route("/expenses/add")
