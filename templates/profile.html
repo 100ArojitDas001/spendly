@@ -21,6 +21,25 @@
 </section>
 
 <!-- ------------------------------------------------------------------ -->
+<!-- Date filter                                                          -->
+<!-- ------------------------------------------------------------------ -->
+<section class="filter-section">
+    <div class="section-inner">
+        <form class="filter-form" method="get" action="{{ url_for('profile') }}">
+            <label for="from_date">From</label>
+            <input type="date" id="from_date" name="from_date" value="{{ from_date or '' }}">
+            <label for="to_date">To</label>
+            <input type="date" id="to_date" name="to_date" value="{{ to_date or '' }}">
+            <button type="submit" class="btn-filter">Filter</button>
+            <a href="{{ url_for('profile') }}" class="btn-clear">Clear</a>
+        </form>
+        {% if from_date and to_date %}
+            <p class="filter-label">Showing: {{ from_display }} – {{ to_display }}</p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- ------------------------------------------------------------------ -->
 <!-- Stats strip                                                          -->
 <!-- ------------------------------------------------------------------ -->
 <section class="stats-section">
@@ -45,7 +64,9 @@
 <!-- ------------------------------------------------------------------ -->
 <section class="transactions-section">
     <div class="section-inner">
-        <h2 class="section-title">Recent Transactions</h2>
+        <h2 class="section-title">
+            {% if from_date and to_date %}Transactions{% else %}Recent Transactions{% endif %}
+        </h2>
         <div class="table-wrap">
             <table class="expense-table">
                 <thead>
@@ -57,16 +78,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for tx in transactions %}
-                    <tr>
-                        <td class="col-date">{{ tx.date }}</td>
-                        <td>{{ tx.description }}</td>
-                        <td>
-                            <span class="badge badge-{{ tx.category | lower }}">{{ tx.category }}</span>
-                        </td>
-                        <td class="col-amount">{{ tx.amount }}</td>
-                    </tr>
-                    {% endfor %}
+                    {% if transactions %}
+                        {% for tx in transactions %}
+                        <tr>
+                            <td class="col-date">{{ tx.date }}</td>
+                            <td>{{ tx.description }}</td>
+                            <td>
+                                <span class="badge badge-{{ tx.category | lower }}">{{ tx.category }}</span>
+                            </td>
+                            <td class="col-amount">{{ tx.amount }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="empty-state">No transactions for this period.</td>
+                        </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
