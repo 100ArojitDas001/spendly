@@ -106,4 +106,4 @@ approves.
   report it and stop
 - If either subagent fails or returns no output, 
   report it and do not present a partial review 
-  as complete
+  as comp
