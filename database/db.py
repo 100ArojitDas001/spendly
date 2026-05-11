@@ -63,6 +63,16 @@ def create_user(name, email, password):
     return user_id
 
 
+def create_expense(user_id, amount, category, date, description):
+    conn = get_db()
+    conn.execute(
+        "INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)",
+        (user_id, amount, category, date, description or None),
+    )
+    conn.commit()
+    conn.close()
+
+
 def seed_db():
     conn = get_db()
     if conn.execute("SELECT 1 FROM users LIMIT 1").fetchone():
