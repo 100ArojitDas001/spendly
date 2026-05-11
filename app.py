@@ -1,11 +1,16 @@
+import math
 import sqlite3
 from datetime import datetime
+
 from flask import Flask, render_template, session, redirect, url_for, request, abort, flash
-from database.db import get_db, init_db, seed_db, get_user_by_email, verify_password, create_user
+
+from database.db import get_db, init_db, seed_db, get_user_by_email, verify_password, create_user, create_expense
 from database.queries import get_recent_transactions, get_user_by_id, get_summary_stats, get_category_breakdown
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"
+
+EXPENSE_CATEGORIES = ["Food", "Transport", "Bills", "Health", "Entertainment", "Shopping", "Other"]
 
 
 # ------------------------------------------------------------------ #
@@ -132,9 +137,50 @@ def analytics():
     return render_template("analytics.html")
 
 
-@app.route("/expenses/add")
+@app.route("/expenses/add", methods=["GET", "POST"])
 def add_expense():
-    return "Add expense — coming in Step 7"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    def _render_form():
+        return render_template("add_expense.html", categories=EXPENSE_CATEGORIES,
+                               today=datetime.today().strftime("%Y-%m-%d"))
+
+    if request.method == "POST":
+        amount_raw = request.form.get("amount", "").strip()
+        category = request.form.get("category", "").strip()
+        date = request.form.get("date", "").strip()
+        description = request.form.get("description", "").strip()
+
+        try:
+            amount = float(amount_raw)
+        except ValueError:
+            abort(400)
+
+        if not math.isfinite(amount):
+            abort(400)
+
+        if amount <= 0:
+            flash("Amount must be greater than zero.")
+            return _render_form()
+
+        if not date:
+            flash("Date is required.")
+            return _render_form()
+
+        try:
+            datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+            flash("Date must be in YYYY-MM-DD format.")
+            return _render_form()
+
+        if category not in EXPENSE_CATEGORIES:
+            abort(400)
+
+        create_expense(session["user_id"], amount, category, date, description)
+        return redirect(url_for("profile"))
+
+    return _render_form()
 
 
 @app.route("/expenses/<int:id>/edit")
